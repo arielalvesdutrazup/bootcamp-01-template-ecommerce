@@ -1,4 +1,4 @@
-package dev.arielalvesdutra.ml.tests.factories.entities;
+package dev.arielalvesdutra.ml.tests.factories.dtos;
 
 import dev.arielalvesdutra.ml.controllers.dtos.CadastrarUsuarioRequestDTO;
 
