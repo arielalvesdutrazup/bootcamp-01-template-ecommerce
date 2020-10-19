@@ -1,0 +1,57 @@
+package dev.arielalvesdutra.ml.tests.it.controllers;
+
+
+import dev.arielalvesdutra.ml.services.UsuarioService;
+import dev.arielalvesdutra.ml.tests.factories.entities.CadastrarUsuarioRequestDTOFactory;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@AutoConfigureTestDatabase
+@ActiveProfiles("test")
+public class UsuarioControllerIT {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    private final String URL_BASE = "/usuarios";
+
+    @Test
+    public void cadastrar_deveRetornar201() {
+        var bcrypt = new BCryptPasswordEncoder();
+        var requestDTO = CadastrarUsuarioRequestDTOFactory.paraPersistir();
+
+        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(URL_BASE, requestDTO, Long.class);
+
+        assertThat(responseEntity).isNotNull();
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(HttpStatus.CREATED.value());
+
+        var responseBody = responseEntity.getBody();
+
+        assertThat(responseBody).isNotNull();
+
+        var usuarioBuscado = usuarioService.buscarPeloId(responseBody);
+
+        assertThat(usuarioBuscado).isNotNull();
+        assertThat(usuarioBuscado.getId()).isEqualTo(responseBody);
+        assertThat(usuarioBuscado.getLogin()).isEqualTo(requestDTO.getLogin());
+        assertThat(usuarioBuscado.getSenha()).isNotNull();
+        assertThat(usuarioBuscado.getSenha()).isNotEqualTo(requestDTO.getSenha());
+        assertThat(bcrypt.matches(requestDTO.getSenha(), usuarioBuscado.getSenha())).isTrue();
+        assertThat(usuarioBuscado.getCadastradoEm()).isNotNull();
+    }
+
+}

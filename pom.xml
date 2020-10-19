@@ -45,7 +45,8 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
+			<version>1.4.197</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
