@@ -2,7 +2,8 @@ package dev.arielalvesdutra.ml.tests.it.controllers;
 
 
 import dev.arielalvesdutra.ml.services.UsuarioService;
-import dev.arielalvesdutra.ml.tests.factories.entities.CadastrarUsuarioRequestDTOFactory;
+import dev.arielalvesdutra.ml.tests.factories.dtos.CadastrarUsuarioRequestDTOFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,12 +30,20 @@ public class UsuarioControllerIT {
 
     private final String URL_BASE = "/usuarios";
 
+    @AfterEach
+    public void tearDown() {
+        usuarioService.removeTodos();
+    }
+
     @Test
     public void cadastrar_deveRetornar201() {
         var bcrypt = new BCryptPasswordEncoder();
         var requestDTO = CadastrarUsuarioRequestDTOFactory.paraPersistir();
 
-        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(URL_BASE, requestDTO, Long.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(
+                URL_BASE,
+                requestDTO,
+                String.class);
 
         assertThat(responseEntity).isNotNull();
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(HttpStatus.CREATED.value());
@@ -43,10 +52,11 @@ public class UsuarioControllerIT {
 
         assertThat(responseBody).isNotNull();
 
-        var usuarioBuscado = usuarioService.buscarPeloId(responseBody);
+        var usuarioId = Long.parseLong(responseBody);
+        var usuarioBuscado = usuarioService.buscarPeloId(usuarioId);
 
         assertThat(usuarioBuscado).isNotNull();
-        assertThat(usuarioBuscado.getId()).isEqualTo(responseBody);
+        assertThat(usuarioBuscado.getId()).isEqualTo(usuarioId);
         assertThat(usuarioBuscado.getLogin()).isEqualTo(requestDTO.getLogin());
         assertThat(usuarioBuscado.getSenha()).isNotNull();
         assertThat(usuarioBuscado.getSenha()).isNotEqualTo(requestDTO.getSenha());

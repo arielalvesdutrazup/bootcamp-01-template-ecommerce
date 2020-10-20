@@ -51,11 +51,18 @@ public class UsuarioService {
      * @return
      */
     public boolean existePeloLogin(String login) {
+        Assert.notNull(login, "Login para busca de usuários não pode ser nulo!");
+
         return entityManager.createQuery(
                 "SELECT u.id " +
-                "FROM Usuario u " +
+                "FROM " + Usuario.class.getName() + " u " +
                 "WHERE u.login = :login")
                 .setParameter("login", login)
                 .getResultList().size() > 0;
+    }
+
+    @Transactional
+    public void removeTodos() {
+        entityManager.createQuery("DELETE FROM " + Usuario.class.getName());
     }
 }
