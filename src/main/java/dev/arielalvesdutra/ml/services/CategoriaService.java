@@ -20,7 +20,7 @@ public class CategoriaService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Categoria buscarPeloId(Long id) {
+    public Categoria buscaPeloId(Long id) {
         Assert.notNull(id, "Id para busca da categoria não pode ser nulo!");
 
         return entityManager.find(Categoria.class, id);
@@ -36,7 +36,7 @@ public class CategoriaService {
                 .setNome(requestDTO.getNome());
 
         if (requestDTO.getCategoriaMaeId() != null) {
-            categoria.setCategoriaMae(buscarPeloId(requestDTO.getCategoriaMaeId()));
+            categoria.setCategoriaMae(buscaPeloId(requestDTO.getCategoriaMaeId()));
         }
 
         entityManager.persist(categoria);
@@ -57,6 +57,7 @@ public class CategoriaService {
 
     @Transactional
     public void removeTodos() {
-        entityManager.createQuery("DELETE FROM " + Categoria.class.getName());
+        entityManager.createQuery("DELETE FROM " + Categoria.class.getName())
+                .executeUpdate();
     }
 }

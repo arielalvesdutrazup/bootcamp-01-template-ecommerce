@@ -53,7 +53,7 @@ public class UsuarioControllerIT {
         assertThat(responseBody).isNotNull();
 
         var usuarioId = Long.parseLong(responseBody);
-        var usuarioBuscado = usuarioService.buscarPeloId(usuarioId);
+        var usuarioBuscado = usuarioService.buscaPeloId(usuarioId);
 
         assertThat(usuarioBuscado).isNotNull();
         assertThat(usuarioBuscado.getId()).isEqualTo(usuarioId);

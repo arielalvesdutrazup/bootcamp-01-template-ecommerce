@@ -3,7 +3,9 @@ package dev.arielalvesdutra.ml.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Categoria {
@@ -13,9 +15,12 @@ public class Categoria {
     private Long id;
     @NotBlank(message = "Nome não pode ser vazio!")
     private String nome;
+    private OffsetDateTime cadastradoEm = OffsetDateTime.now();
+
     @ManyToOne
     private Categoria categoriaMae;
-    private OffsetDateTime cadastradoEm = OffsetDateTime.now();
+    @OneToMany(mappedBy = "categoria",  cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Produto> produtos =  new HashSet<>();
 
     public Categoria() {
     }
@@ -53,6 +58,15 @@ public class Categoria {
 
     public Categoria setCadastradoEm(OffsetDateTime cadastradoEm) {
         this.cadastradoEm = cadastradoEm;
+        return this;
+    }
+
+    public Set<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public Categoria setProdutos(Set<Produto> produtos) {
+        this.produtos = produtos;
         return this;
     }
 

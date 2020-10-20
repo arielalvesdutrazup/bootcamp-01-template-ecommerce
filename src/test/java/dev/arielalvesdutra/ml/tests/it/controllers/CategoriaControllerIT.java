@@ -49,7 +49,7 @@ public class CategoriaControllerIT {
         assertThat(responseBody).isNotNull();
 
         var categoriaId = Long.parseLong(responseBody);
-        var categoriaBuscada = categoriaService.buscarPeloId(categoriaId);
+        var categoriaBuscada = categoriaService.buscaPeloId(categoriaId);
 
         assertThat(categoriaBuscada).isNotNull();
         assertThat(categoriaBuscada.getId()).isEqualTo(categoriaId);
@@ -75,7 +75,7 @@ public class CategoriaControllerIT {
         assertThat(responseBody).isNotNull();
 
         var categoriaId = Long.parseLong(responseBody);
-        var categoriaBuscada = categoriaService.buscarPeloId(categoriaId);
+        var categoriaBuscada = categoriaService.buscaPeloId(categoriaId);
 
         assertThat(categoriaBuscada).isNotNull();
         assertThat(categoriaBuscada.getId()).isEqualTo(categoriaId);
@@ -83,5 +83,4 @@ public class CategoriaControllerIT {
         assertThat(categoriaBuscada.getCategoriaMae()).isEqualTo(categoriaMae);
         assertThat(categoriaBuscada.getCadastradoEm()).isNotNull();
     }
-
 }
