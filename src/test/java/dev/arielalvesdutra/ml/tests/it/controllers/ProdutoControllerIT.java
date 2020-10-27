@@ -97,7 +97,7 @@ public class ProdutoControllerIT {
     @Test
     public void cadastrar_deveRetornar201() {
         var requestDTO = paraPersistir(caracteristicasIds, categoria.getId());
-        var httpEntity = new HttpEntity<CadastrarProdutoRequestDTO>(requestDTO, getCabelhoHttpValidoComAuthorization());
+        var httpEntity = new HttpEntity<CadastrarProdutoRequestDTO>(requestDTO, getCabecalhoHttpValidoComAuthorization());
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(
                 URL_BASE,
@@ -148,7 +148,7 @@ public class ProdutoControllerIT {
     public void cadastrar_semNome_deveRetornar400() {
         var requestDTO = paraPersistir(caracteristicasIds, categoria.getId());
         requestDTO.setNome(null);
-        var httpEntity = new HttpEntity<CadastrarProdutoRequestDTO>(requestDTO, getCabelhoHttpValidoComAuthorization());
+        var httpEntity = new HttpEntity<CadastrarProdutoRequestDTO>(requestDTO, getCabecalhoHttpValidoComAuthorization());
 
         ResponseEntity<ErroResponseDTO> responseEntity = restTemplate.exchange(
                 URL_BASE,
@@ -197,7 +197,7 @@ public class ProdutoControllerIT {
         var produto = produtoService.cadastrar(usuarioParaLogar.getId(), paraPersistir(caracteristicasIds, categoria.getId()));
         var url = URL_BASE +  "/" + produto.getId() + "/imagens";
 
-        HttpHeaders headers = getCabelhoHttpValidoComAuthorization();
+        HttpHeaders headers = getCabecalhoHttpValidoComAuthorization();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -222,7 +222,7 @@ public class ProdutoControllerIT {
         var imagem1 = "";
         var produto = produtoService.cadastrar(usuarioParaLogar.getId(), paraPersistir( caracteristicasIds, categoria.getId()));
         var url = URL_BASE +  "/" + produto.getId() + "/imagens";
-        HttpHeaders headers = getCabelhoHttpValidoComAuthorization(segundoUsuario);
+        HttpHeaders headers = getCabecalhoHttpValidoComAuthorization(segundoUsuario);
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("imagens", arquivoFake());
@@ -249,7 +249,7 @@ public class ProdutoControllerIT {
                 usuarioParaLogar.getId(),
                 paraPersistir( caracteristicasIds, categoria.getId()));
         var url = URL_BASE +  "/" + produto.getId() + "/imagens";
-        HttpHeaders headers = getCabelhoHttpValidoComAuthorization();
+        HttpHeaders headers = getCabecalhoHttpValidoComAuthorization();
 
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
@@ -276,7 +276,7 @@ public class ProdutoControllerIT {
                 usuarioParaLogar.getId(),
                 paraPersistir( caracteristicasIds, categoria.getId()));
         var url = URL_BASE +  "/" + produto.getId() + "/imagens";
-        HttpHeaders headers = getCabelhoHttpValidoComAuthorization();
+        HttpHeaders headers = getCabecalhoHttpValidoComAuthorization();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("imagens", null);
@@ -306,7 +306,7 @@ public class ProdutoControllerIT {
                 usuarioParaLogar.getId(),
                 paraPersistir( caracteristicasIds, categoria.getId()));
         var url = URL_BASE + "/" + produto.getId() + "/opinioes";
-        var httpEntity = new HttpEntity<CadastrarProdutoOpiniaoRequestDTO>(requestDTO, getCabelhoHttpValidoComAuthorization());
+        var httpEntity = new HttpEntity<CadastrarProdutoOpiniaoRequestDTO>(requestDTO, getCabecalhoHttpValidoComAuthorization());
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(
                 url,
@@ -340,7 +340,7 @@ public class ProdutoControllerIT {
                 usuarioParaLogar.getId(),
                 paraPersistir( caracteristicasIds, categoria.getId()));
         var url = URL_BASE + "/" + produto.getId() + "/opinioes";
-        var httpEntity = new HttpEntity<CadastrarProdutoOpiniaoRequestDTO>(requestDTO, getCabelhoHttpValidoComAuthorization());
+        var httpEntity = new HttpEntity<CadastrarProdutoOpiniaoRequestDTO>(requestDTO, getCabecalhoHttpValidoComAuthorization());
 
         ResponseEntity<ErroResponseDTO> responseEntity = restTemplate.exchange(
                 url,
@@ -366,7 +366,7 @@ public class ProdutoControllerIT {
                 usuarioParaLogar.getId(),
                 paraPersistir( caracteristicasIds, categoria.getId()));
         var url = URL_BASE + "/" + produto.getId() + "/opinioes";
-        var httpEntity = new HttpEntity<CadastrarProdutoOpiniaoRequestDTO>(requestDTO, getCabelhoHttpValidoComAuthorization());
+        var httpEntity = new HttpEntity<CadastrarProdutoOpiniaoRequestDTO>(requestDTO, getCabecalhoHttpValidoComAuthorization());
 
         ResponseEntity<ErroResponseDTO> responseEntity = restTemplate.exchange(
                 url,
@@ -391,7 +391,7 @@ public class ProdutoControllerIT {
                 usuarioParaLogar.getId(),
                 paraPersistir(caracteristicasIds, categoria.getId()));
         var url = URL_BASE +  "/" + produto.getId() + "/perguntas";
-        var httpEntity = new HttpEntity<CadastraProdutoPerguntaRequestDTO>(requestDTO, getCabelhoHttpValidoComAuthorization());
+        var httpEntity = new HttpEntity<CadastraProdutoPerguntaRequestDTO>(requestDTO, getCabecalhoHttpValidoComAuthorization());
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(
                 url,
@@ -423,7 +423,7 @@ public class ProdutoControllerIT {
                 usuarioParaLogar.getId(),
                 paraPersistir(caracteristicasIds, categoria.getId()));
         var url = URL_BASE +  "/" + produto.getId() + "/perguntas";
-        var httpEntity = new HttpEntity<CadastraProdutoPerguntaRequestDTO>(requestDTO, getCabelhoHttpValidoComAuthorization());
+        var httpEntity = new HttpEntity<CadastraProdutoPerguntaRequestDTO>(requestDTO, getCabecalhoHttpValidoComAuthorization());
 
         ResponseEntity<ErroResponseDTO> responseEntity = restTemplate.exchange(
                 url,
@@ -444,7 +444,7 @@ public class ProdutoControllerIT {
     /**
      * @todo REFATORAR
      */
-    private HttpHeaders getCabelhoHttpValidoComAuthorization() {
+    private HttpHeaders getCabecalhoHttpValidoComAuthorization() {
         var httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", getTokenComUsuarioValido(usuarioParaLogar));
         return httpHeaders;
@@ -453,7 +453,7 @@ public class ProdutoControllerIT {
     /**
      * @todo REFATORAR
      */
-    private HttpHeaders getCabelhoHttpValidoComAuthorization(Usuario usuario) {
+    private HttpHeaders getCabecalhoHttpValidoComAuthorization(Usuario usuario) {
         var httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", getTokenComUsuarioValido(usuario));
         return httpHeaders;
